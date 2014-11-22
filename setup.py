@@ -25,9 +25,12 @@ setup(
 	entry_points=\
 	"""
     [ckan.plugins]
-	helloresource = ckanext.helloresource.plugin:HelloResourcePlugin
+	
+    helloresource = ckanext.helloresource.plugin:HelloResourcePlugin
 
     [ckan.celery_task]
-    tasks = ckanext.helloresource.celery_import:task_imports
-	""",
+    
+    helloresource_tasks = ckanext.helloresource.celery_import:task_imports
+	
+    """,
 )
