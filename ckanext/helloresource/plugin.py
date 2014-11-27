@@ -75,7 +75,9 @@ class HelloResourcePlugin(p.SingletonPlugin):
             'username': user.get('name'),
         }
         
-        context['emulate_long_processing'] = 5 # virtual steps
+        context['emulate_long_process'] = 5 # virtual steps
+
+        context['emulate_retried_failure'] = True
 
         resource_dict = resource_dictize(resource, {'model': model})
         
@@ -83,7 +85,8 @@ class HelloResourcePlugin(p.SingletonPlugin):
         celery.send_task(
             "helloresource.upload", 
             args=[context, resource_dict], 
-            task_id=task_id)
+            task_id=task_id,
+            countdown=10)
 
         # The task is queued
 
@@ -93,5 +96,5 @@ class HelloResourcePlugin(p.SingletonPlugin):
         
         result_url = toolkit.url_for(
             'helloresource-task-result', task_id=task_id, qualified=True)
-        h.flash('A task has been created, see %s' % (result_url))
+        h.flash_notice('A task has been created, see:\n%s' % (result_url))
 
